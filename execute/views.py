@@ -5,13 +5,14 @@ from django.template import loader
 from subprocess import Popen
 from sys import stdout, stdin, stderr
 from .forms import UploadFileForm
-
+import subprocess
+from django.views.static import serve
 
 import time, os, signal
 
-def executeNutil():
-	command = "/home/leuat/django/nutilweb/executeNutil.sh"
-	proc = Popen(command, shell=True, stdin=stdin, stdout=stdout, stderr=stderr)
+def executeNutil(name):
+	command = "/home/leuat/django/nutilweb/executeNutil.sh "+name
+	proc = subprocess.Popen(command, shell=True, stdin=stdin, stdout=stdout, stderr=stderr)
 
 
 def handle_uploaded_file(f):
@@ -32,7 +33,8 @@ def run(request):
 		handle_uploaded_file(file) 		
 		ok = "true"
 
-	executeNutil()
+
+	executeNutil(form.data['title'])
 #	return HttpResponse(ok + "<br>EXECUTING "+form.data['title']+" DONE")
 	return HttpResponse(ok + "<br>EXECUTING "+file.name+" DONE")
 
@@ -46,3 +48,22 @@ def index(request):
 	return render(request, 'submitform.html', {'form': form})
 #    return HttpResponse("Select file to execute")
 # Create your views here.
+import os 
+
+def results(request):
+    path="results/"  # insert the path to your directory   
+    img_list =os.listdir(path)   
+    return render(request, 'results.html', {'images': img_list})
+
+def download(request, filename):
+	filepath = "results/"+filename
+
+#	fl = open(fl_path+filename, "rb")
+
+	return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+#	return HttpResponse(fl,content_type='application/force-download')
+#	return HttpResponse(fl,content_type='application/force-download')
+#	mime_type, _ = mimetypes.guess_type(fl_path)
+#	response = HttpResponse(fl, content_type=mime_type)
+#	response["Content-Disposition"] = "attachment; filename=%s" % filename
+#	return response
