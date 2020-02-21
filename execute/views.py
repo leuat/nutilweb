@@ -36,7 +36,11 @@ def run(request):
 
 	executeNutil(form.data['title'])
 #	return HttpResponse(ok + "<br>EXECUTING "+form.data['title']+" DONE")
-	return HttpResponse(ok + "<br>EXECUTING "+file.name+" DONE")
+
+	return render(request, 'execute.html',{'name': form.data['title']})
+
+
+#	return HttpResponse(ok + "<br>EXECUTING "+file.name + ".")
 
 def index(request):
 #	template = loader.get_template('submitform.html')
