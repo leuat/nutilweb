@@ -11,7 +11,7 @@ from django.views.static import serve
 import time, os, signal
 
 def executeNutil(name):
-	command = "/Users/leuat/code/nutilweb/executeNutil.sh "+name
+	command = "/home/leuat/code/nutilweb/executeNutil.sh "+name
 	proc = subprocess.Popen(command, shell=True, stdin=stdin, stdout=stdout, stderr=stderr)
 
 
